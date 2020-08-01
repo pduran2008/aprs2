@@ -4,11 +4,12 @@ import pandas as pd
 
 class DecodePackets:
 
-    def __init__(self, src: str, infiletype: str):
+    def __init__(self, src: str, outfile: str, infiletype: str):
         """Class initialization
         :param src: source data filename
         """
         self.src = src
+        self.outfile = outfile
         self.infiletype = infiletype
         self._readfile()
         self._decode()
@@ -95,11 +96,6 @@ class DecodePackets:
                 print('Not able to decode this packet type yet...')
 #                errortimes.append(row.datetime)
 #                errorpackets.append(row.packet)
-            print(errorpackets)
-        print(len(typelist))
-        print(len(tslist))
-        print(len(sourcelist))
-        print(len(addresseelist))
         decoded_df = pd.DataFrame(
             {'type': typelist,
              'timestamp': tslist,
@@ -116,10 +112,13 @@ class DecodePackets:
              'speed': speedlist}
         )
         decoded_df = decoded_df.set_index(['timestamp'])
-#        decoded_df.to_csv("/Users/ptduran/Desktop/APRS/decoded/KJ4OVR_2012-2015.LOG", na_rep = "None")
-        decoded_df.to_csv("/Users/ptduran/Desktop/APRS/decoded/KJ4ERJ_2019-2020.LOG", na_rep="None")
+        decoded_df.to_csv(self.outfile, na_rep="None")
 
-test = DecodePackets("/Users/ptduran/Desktop/APRS/raw/APRS_20190305-20200720_partial/KJ4OVR.LOG", "patrick")
+rawdir = "/Users/ptduran/Desktop/APRS/raw/APRS_20190305-20200720_partial/"
+rawfile = "KJ4OVR.LOG"
+decodeddir = "/Users/ptduran/Desktop/APRS/decoded/APRS_20190305-20200720_partial/"
+
+test = DecodePackets(rawdir+rawfile, decodeddir+rawfile+"-decoded.csv", "patrick")
 
 #test = DecodePackets("/Users/ptduran/PycharmProjects/aprspy/packets/KJ4OVR-2015.LOG", "lynn")
 
