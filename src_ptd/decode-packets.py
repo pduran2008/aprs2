@@ -34,11 +34,9 @@ class DecodePackets:
                 errortimes.append(row.datetime)
                 errorpackets.append(row.packet)
                 continue
-            raw.append(decoded.raw)
-            tslist.append(decoded._ts)
-            callsign.append(decoded.source)
             if type(decoded).__name__ == 'PositionPacket':
                 typelist.append('Position')
+                tslist.append(decoded._ts)
                 latlist.append(decoded.latitude)
                 lonlist.append(decoded.longitude)
                 altlist.append(decoded.altitude)
@@ -52,6 +50,7 @@ class DecodePackets:
                 speedlist.append(decoded.speed)
             elif type(decoded).__name__ == 'MessagePacket':
                 typelist.append('Message')
+                tslist.append(decoded._ts)
                 latlist.append('None')
                 lonlist.append('None')
                 altlist.append('None')
@@ -65,6 +64,7 @@ class DecodePackets:
                 speedlist.append('None')
             elif type(decoded).__name__ == 'StatusPacket':
                 typelist.append('Status')
+                tslist.append(decoded._ts)
                 latlist.append('None')
                 lonlist.append('None')
                 altlist.append('None')
@@ -78,6 +78,7 @@ class DecodePackets:
                 speedlist.append('None')
             elif type(decoded).__name__ == 'ObjectPacket':
                 typelist.append('Object')
+                tslist.append(decoded._ts)
                 latlist.append('None')
                 lonlist.append('None')
                 altlist.append('None')
@@ -92,7 +93,13 @@ class DecodePackets:
             else:
                 print(type(decoded).__name__)
                 print('Not able to decode this packet type yet...')
+#                errortimes.append(row.datetime)
+#                errorpackets.append(row.packet)
             print(errorpackets)
+        print(len(typelist))
+        print(len(tslist))
+        print(len(sourcelist))
+        print(len(addresseelist))
         decoded_df = pd.DataFrame(
             {'type': typelist,
              'timestamp': tslist,
@@ -108,7 +115,6 @@ class DecodePackets:
              'bearing': bearinglist,
              'speed': speedlist}
         )
-        print(decoded_df)
         decoded_df = decoded_df.set_index(['timestamp'])
 #        decoded_df.to_csv("/Users/ptduran/Desktop/APRS/decoded/KJ4OVR_2012-2015.LOG", na_rep = "None")
         decoded_df.to_csv("/Users/ptduran/Desktop/APRS/decoded/KJ4ERJ_2019-2020.LOG", na_rep="None")
