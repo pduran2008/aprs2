@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import simplekml
 
 class GetPackets:
@@ -18,7 +19,8 @@ class GetPackets:
             self._createkml()
 
     def _readfile(self):
-        self.packetdf = pd.read_csv("/Users/ptduran/Desktop/APRS/decoded/KJ4OVR_2012-2015.LOG", parse_dates=True)
+        self.packetdf = pd.read_csv("/Users/ptduran/Desktop/APRS/decoded/APRS_20190305-20200720_partial/KJ4OVR.LOG-decoded.csv", parse_dates=True)
+        self.packetdf = self.packetdf.replace(np.nan, "None", regex=True)   # Replace any nans with "None" string
 
     def _selectpackets(self):
 
@@ -94,6 +96,8 @@ class GetPackets:
         kml.save("/Users/ptduran/PycharmProjects/aprspy/aprspy/output/test.kml")
         print(kml.kml())
 
+selectedpackets = GetPackets(["KJ4OVR-2"], "kml")
+
 #selectedpackets = GetPackets(["KJ4OVR-2", "KJ4OVR-5", "KJ4OVR-9", "KJ4OVR-12"], "kml",
 #                             ["2014-10-11 00:00:00", "2014-10-11 23:59:59"])
 
@@ -104,8 +108,8 @@ class GetPackets:
 # selectedpackets = GetPackets(callsign=["KJ4OVR-2", "KJ4OVR-5", "KJ4OVR-9", "KJ4OVR-12"], latlonrad=[30.095, -81.621, 20000])
 
 # Lynn & Marta's:
-selectedpackets = GetPackets(callsign=["KJ4OVR-2", "KJ4OVR-5", "KJ4OVR-9", "KJ4OVR-12"], outputtype="kml", latlonrad=[27.996684, -80.658998, 500])
-print(selectedpackets.subsetdf)
+#selectedpackets = GetPackets(callsign=["KJ4OVR-2", "KJ4OVR-5", "KJ4OVR-9", "KJ4OVR-12"], outputtype="kml", latlonrad=[27.996684, -80.658998, 500])
+#print(selectedpackets.subsetdf)
 
 # Sebastian Inlet:
 #selectedpackets = GetPackets(callsign=["KJ4OVR-2", "KJ4OVR-5", "KJ4OVR-9", "KJ4OVR-12"], latlonrad=[27.860131, -80.448530, 5000])
